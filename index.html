@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>OUTR CGPA Calculator</title>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<header>
+  <div class="brand">OUTR</div>
+  <div>
+    <h1>OUTR CGPA Calculator</h1>
+    <p>Odisha University of Technology and Research</p>
+  </div>
+</header>
+
+<main>
+<section class="card">
+  <h2>SGPA Calculator</h2>
+  <p class="hint">Enter subject name, credit and grade.</p>
+
+  <div class="table-head">
+    <span>Subject</span><span>Credit</span><span>Grade</span><span></span>
+  </div>
+  <div id="subjects"></div>
+
+  <div class="buttons">
+    <button type="button" id="addSubject" class="secondary">＋ Add Subject</button>
+    <button type="button" id="calcSgpa" class="primary">Calculate SGPA</button>
+  </div>
+  <div id="sgpaResult" class="result"></div>
+</section>
+
+<section class="card">
+  <h2>CGPA Calculator</h2>
+  <p class="hint">Enter semester SGPA and total credits.</p>
+
+  <div id="semesters"></div>
+  <div class="buttons">
+    <button type="button" id="addSemester" class="secondary">＋ Add Semester</button>
+    <button type="button" id="calcCgpa" class="primary">Calculate CGPA</button>
+  </div>
+  <div id="cgpaResult" class="result"></div>
+</section>
+
+<section class="card">
+<h2>OUTR Grading System</h2>
+<div class="grades">
+  <div><b>O</b><span>91–100</span><strong>10 Point</strong></div>
+  <div><b>A</b><span>81–90</span><strong>9 Point</strong></div>
+  <div><b>B</b><span>71–80</span><strong>8 Point</strong></div>
+  <div><b>C</b><span>61–70</span><strong>7 Point</strong></div>
+  <div><b>D</b><span>51–60</span><strong>6 Point</strong></div>
+  <div><b>P</b><span>35–50</span><strong>5 Point</strong></div>
+  <div><b>F</b><span>&lt;35</span><strong>2 Point</strong></div>
+  <div><b>M</b><span>Malpractice</span><strong>—</strong></div>
+  <div><b>S</b><span>Absent</span><strong>—</strong></div>
+  <div><b>T</b><span>Attendance shortage</span><strong>—</strong></div>
+</div>
+</section>
+</main>
+
+<footer>OUTR CGPA Calculator • Free student tool</footer>
+<script src="script.js"></script>
+</body>
+</html>
