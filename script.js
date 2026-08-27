@@ -1,190 +1,98 @@
-// OUTR CGPA Calculator V3
-// No external libraries. Works offline.
+(function(){
+"use strict";
 
-(function () {
-  "use strict";
+const points={O:10,A:9,B:8,C:7,D:6,P:5,F:2};
+const special={M:"Malpractice",S:"Absent",T:"Shortage of attendance"};
+const subjects=document.getElementById("subjects");
+const semesters=document.getElementById("semesters");
 
-  const GRADE_POINTS = {
-    O: 10, A: 9, B: 8, C: 7, D: 6, P: 5, F: 2
+function options(){
+  return '<option value="">Grade</option>'+
+    ["O","A","B","C","D","P","F","M","S","T"].map(g=>`<option value="${g}">${g}</option>`).join("");
+}
+function updateCounts(){
+  document.getElementById("subjectCount").textContent=subjects.children.length;
+  document.getElementById("semesterCount").textContent=semesters.children.length;
+}
+function addSubject(){
+  const row=document.createElement("div");
+  row.className="subject-row";
+  row.innerHTML=`
+    <input class="subject-name" placeholder="Subject name" aria-label="Subject name">
+    <input class="credit" type="number" min="0" step="0.5" placeholder="Credit" aria-label="Credit">
+    <select class="grade" aria-label="Grade">${options()}</select>
+    <button type="button" class="remove" aria-label="Remove subject">×</button>`;
+  row.querySelector(".remove").onclick=()=>{row.remove();updateCounts()};
+  subjects.appendChild(row);updateCounts();
+}
+function addSemester(){
+  const row=document.createElement("div");
+  row.className="subject-row";
+  row.innerHTML=`
+    <input class="semester-name" placeholder="Semester" aria-label="Semester">
+    <input class="sgpa" type="number" min="0" max="10" step="0.01" placeholder="SGPA" aria-label="SGPA">
+    <input class="sem-credit" type="number" min="0" step="0.5" placeholder="Credit" aria-label="Credits">
+    <button type="button" class="remove" aria-label="Remove semester">×</button>`;
+  row.querySelector(".remove").onclick=()=>{row.remove();updateCounts()};
+  semesters.appendChild(row);updateCounts();
+}
+function showResult(id,number,meta,warning){
+  const box=document.getElementById(id);
+  box.innerHTML=`
+    <div class="result-label">${id==="sgpaResult"?"Your SGPA":"Your CGPA"}</div>
+    <div class="result-number">${number.toFixed(2)}</div>
+    <div class="result-meta">${meta}</div>
+    ${warning?`<div class="warning">${warning}</div>`:""}
+    <button type="button" class="print-button" onclick="window.print()">🖨 Print Result</button>`;
+  box.classList.add("show");
+}
+function calcSGPA(){
+  let weighted=0,total=0,specials=[];
+  [...subjects.children].forEach((row,i)=>{
+    const c=Number(row.querySelector(".credit").value);
+    const g=row.querySelector(".grade").value;
+    if(c>0&&g){
+      if(points[g]!==undefined){weighted+=c*points[g];total+=c}
+      else specials.push(`Subject ${i+1}: ${g} (${special[g]})`);
+    }
+  });
+  if(!total){
+    const box=document.getElementById("sgpaResult");
+    box.innerHTML='<b>Please enter credit and grade for at least one subject.</b><div class="warning">M, S and T are status grades and are not included in SGPA.</div>';
+    box.classList.add("show");return;
+  }
+  showResult("sgpaResult",weighted/total,`Total credits counted: ${total}`,specials.length?`Not included: ${specials.join(", ")}`:"");
+}
+function calcCGPA(){
+  let weighted=0,total=0;
+  [...semesters.children].forEach(row=>{
+    const s=Number(row.querySelector(".sgpa").value);
+    const c=Number(row.querySelector(".sem-credit").value);
+    if(s>=0&&s<=10&&c>0){weighted+=s*c;total+=c}
+  });
+  if(!total){
+    const box=document.getElementById("cgpaResult");
+    box.innerHTML='<b>Please enter semester SGPA and credits.</b>';
+    box.classList.add("show");return;
+  }
+  showResult("cgpaResult",weighted/total,`Total credits counted: ${total}`,"");
+}
+
+document.getElementById("addSubject").onclick=addSubject;
+document.getElementById("addSemester").onclick=addSemester;
+document.getElementById("calcSgpa").onclick=calcSGPA;
+document.getElementById("calcCgpa").onclick=calcCGPA;
+
+document.querySelectorAll(".tab").forEach(btn=>{
+  btn.onclick=()=>{
+    document.querySelectorAll(".tab").forEach(x=>x.classList.remove("active"));
+    document.querySelectorAll(".panel").forEach(x=>x.classList.remove("active-panel"));
+    btn.classList.add("active");
+    document.getElementById(btn.dataset.tab+"Panel").classList.add("active-panel");
   };
+});
 
-  const SPECIAL = {
-    M: "Malpractice",
-    S: "Absent",
-    T: "Shortage of attendance"
-  };
-
-  const subjectsBox = document.getElementById("subjects");
-  const semestersBox = document.getElementById("semesters");
-
-  function gradeOptions() {
-    const grades = ["O","A","B","C","D","P","F","M","S","T"];
-    return '<option value="">Grade</option>' +
-      grades.map(function(g) {
-        return '<option value="' + g + '">' + g + '</option>';
-      }).join("");
-  }
-
-  function addSubject() {
-    const row = document.createElement("div");
-    row.className = "subject";
-
-    const name = document.createElement("input");
-    name.type = "text";
-    name.className = "subjectName";
-    name.placeholder = "Subject name";
-
-    const credit = document.createElement("input");
-    credit.type = "number";
-    credit.className = "subjectCredit";
-    credit.placeholder = "Credit";
-    credit.min = "0";
-    credit.step = "0.5";
-
-    const grade = document.createElement("select");
-    grade.className = "subjectGrade";
-    grade.innerHTML = gradeOptions();
-
-    const remove = document.createElement("button");
-    remove.type = "button";
-    remove.className = "remove";
-    remove.textContent = "×";
-    remove.title = "Remove subject";
-    remove.addEventListener("click", function() {
-      row.remove();
-    });
-
-    row.appendChild(name);
-    row.appendChild(credit);
-    row.appendChild(grade);
-    row.appendChild(remove);
-    subjectsBox.appendChild(row);
-  }
-
-  function addSemester() {
-    const row = document.createElement("div");
-    row.className = "semester";
-
-    const name = document.createElement("input");
-    name.type = "text";
-    name.className = "semesterName";
-    name.placeholder = "Semester";
-
-    const sgpa = document.createElement("input");
-    sgpa.type = "number";
-    sgpa.className = "semesterSgpa";
-    sgpa.placeholder = "SGPA";
-    sgpa.min = "0";
-    sgpa.max = "10";
-    sgpa.step = "0.01";
-
-    const credit = document.createElement("input");
-    credit.type = "number";
-    credit.className = "semesterCredit";
-    credit.placeholder = "Credits";
-    credit.min = "0";
-    credit.step = "0.5";
-
-    const remove = document.createElement("button");
-    remove.type = "button";
-    remove.className = "remove";
-    remove.textContent = "×";
-    remove.addEventListener("click", function() {
-      row.remove();
-    });
-
-    row.appendChild(name);
-    row.appendChild(sgpa);
-    row.appendChild(credit);
-    row.appendChild(remove);
-    semestersBox.appendChild(row);
-  }
-
-  function showResult(id, html) {
-    const box = document.getElementById(id);
-    box.innerHTML = html;
-    box.classList.add("show");
-  }
-
-  function calculateSGPA() {
-    let weightedPoints = 0;
-    let totalCredits = 0;
-    const special = [];
-
-    const rows = subjectsBox.querySelectorAll(".subject");
-
-    rows.forEach(function(row, index) {
-      const credit = Number(row.querySelector(".subjectCredit").value);
-      const grade = row.querySelector(".subjectGrade").value;
-
-      if (credit > 0 && grade) {
-        if (Object.prototype.hasOwnProperty.call(GRADE_POINTS, grade)) {
-          weightedPoints += credit * GRADE_POINTS[grade];
-          totalCredits += credit;
-        } else {
-          special.push("Subject " + (index + 1) + ": " + grade);
-        }
-      }
-    });
-
-    if (totalCredits === 0) {
-      showResult("sgpaResult", "<b>Please enter a valid credit and grade for at least one subject.</b>");
-      return;
-    }
-
-    const sgpa = weightedPoints / totalCredits;
-
-    let extra = "";
-    if (special.length) {
-      extra = '<div class="warning">Special status not included in the calculation: ' +
-        special.join(", ") + ".</div>";
-    }
-
-    showResult(
-      "sgpaResult",
-      '<div class="label">Your SGPA</div>' +
-      '<div class="number">' + sgpa.toFixed(2) + "</div>" +
-      '<div class="label">Total credits counted: ' + totalCredits + "</div>" +
-      extra
-    );
-  }
-
-  function calculateCGPA() {
-    let weighted = 0;
-    let credits = 0;
-
-    semestersBox.querySelectorAll(".semester").forEach(function(row) {
-      const sgpa = Number(row.querySelector(".semesterSgpa").value);
-      const credit = Number(row.querySelector(".semesterCredit").value);
-
-      if (sgpa >= 0 && sgpa <= 10 && credit > 0) {
-        weighted += sgpa * credit;
-        credits += credit;
-      }
-    });
-
-    if (credits === 0) {
-      showResult("cgpaResult", "<b>Please enter semester SGPA and credits.</b>");
-      return;
-    }
-
-    const cgpa = weighted / credits;
-
-    showResult(
-      "cgpaResult",
-      '<div class="label">Your CGPA</div>' +
-      '<div class="number">' + cgpa.toFixed(2) + "</div>" +
-      '<div class="label">Total credits counted: ' + credits + "</div>"
-    );
-  }
-
-  // Event listeners are attached after the page is loaded.
-  document.getElementById("addSubject").addEventListener("click", addSubject);
-  document.getElementById("calcSgpa").addEventListener("click", calculateSGPA);
-  document.getElementById("addSemester").addEventListener("click", addSemester);
-  document.getElementById("calcCgpa").addEventListener("click", calculateCGPA);
-
-  // Start with 5 subject rows and 2 semester rows.
-  for (let i = 0; i < 5; i++) addSubject();
-  for (let i = 0; i < 2; i++) addSemester();
+for(let i=0;i<4;i++)addSubject();
+for(let i=0;i<2;i++)addSemester();
+updateCounts();
 })();

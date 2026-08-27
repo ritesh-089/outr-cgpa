@@ -3,65 +3,96 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="theme-color" content="#c946a6">
 <title>OUTR CGPA Calculator</title>
 <link rel="stylesheet" href="style.css">
 </head>
 <body>
-<header>
-  <div class="brand">OUTR</div>
-  <div>
-    <h1>OUTR CGPA Calculator</h1>
-    <p>Odisha University of Technology and Research</p>
-  </div>
-</header>
+<div class="orb orb-one"></div>
+<div class="orb orb-two"></div>
 
-<main>
-<section class="card">
-  <h2>SGPA Calculator</h2>
-  <p class="hint">Enter subject name, credit and grade.</p>
+<main class="app">
+  <header class="hero">
+    <div class="logo-wrap" aria-label="OUTR logo">
+      <div class="logo-ring">
+        <div class="logo-inner">OUTR</div>
+      </div>
+    </div>
+    <div class="hero-title">
+      <h1>OUTR CGPA Calculator</h1>
+      <p>SGPA &amp; CGPA Calculator</p>
+    </div>
+  </header>
 
-  <div class="table-head">
-    <span>Subject</span><span>Credit</span><span>Grade</span><span></span>
-  </div>
-  <div id="subjects"></div>
+  <nav class="tabs" aria-label="Calculator type">
+    <button type="button" class="tab active" data-tab="sgpa">SGPA</button>
+    <button type="button" class="tab" data-tab="cgpa">CGPA</button>
+  </nav>
 
-  <div class="buttons">
-    <button type="button" id="addSubject" class="secondary">＋ Add Subject</button>
-    <button type="button" id="calcSgpa" class="primary">Calculate SGPA</button>
-  </div>
-  <div id="sgpaResult" class="result"></div>
-</section>
+  <section id="sgpaPanel" class="panel active-panel">
+    <div class="section-head">
+      <div>
+        <h2>Subjects</h2>
+        <p>Add your subjects, credits and grades.</p>
+      </div>
+      <span class="count" id="subjectCount">0</span>
+    </div>
 
-<section class="card">
-  <h2>CGPA Calculator</h2>
-  <p class="hint">Enter semester SGPA and total credits.</p>
+    <div id="subjects" class="subjects"></div>
 
-  <div id="semesters"></div>
-  <div class="buttons">
-    <button type="button" id="addSemester" class="secondary">＋ Add Semester</button>
-    <button type="button" id="calcCgpa" class="primary">Calculate CGPA</button>
-  </div>
-  <div id="cgpaResult" class="result"></div>
-</section>
+    <button type="button" id="addSubject" class="glass-button add-button">＋ Add Subject</button>
 
-<section class="card">
-<h2>OUTR Grading System</h2>
-<div class="grades">
-  <div><b>O</b><span>91–100</span><strong>10 Point</strong></div>
-  <div><b>A</b><span>81–90</span><strong>9 Point</strong></div>
-  <div><b>B</b><span>71–80</span><strong>8 Point</strong></div>
-  <div><b>C</b><span>61–70</span><strong>7 Point</strong></div>
-  <div><b>D</b><span>51–60</span><strong>6 Point</strong></div>
-  <div><b>P</b><span>35–50</span><strong>5 Point</strong></div>
-  <div><b>F</b><span>&lt;35</span><strong>2 Point</strong></div>
-  <div><b>M</b><span>Malpractice</span><strong>—</strong></div>
-  <div><b>S</b><span>Absent</span><strong>—</strong></div>
-  <div><b>T</b><span>Attendance shortage</span><strong>—</strong></div>
-</div>
-</section>
+    <div class="creator">
+      <b>Made by Ritesh Mallik</b>
+      <span>Civil</span>
+    </div>
+
+    <button type="button" id="calcSgpa" class="main-button">Calculate SGPA</button>
+
+    <div id="sgpaResult" class="result-card" aria-live="polite"></div>
+  </section>
+
+  <section id="cgpaPanel" class="panel">
+    <div class="section-head">
+      <div>
+        <h2>Semester Results</h2>
+        <p>Enter each semester SGPA and total credits.</p>
+      </div>
+      <span class="count" id="semesterCount">0</span>
+    </div>
+
+    <div id="semesters" class="subjects"></div>
+
+    <button type="button" id="addSemester" class="glass-button add-button">＋ Add Semester</button>
+    <button type="button" id="calcCgpa" class="main-button">Calculate CGPA</button>
+
+    <div id="cgpaResult" class="result-card" aria-live="polite"></div>
+  </section>
+
+  <section class="grade-card">
+    <div class="section-head compact">
+      <div>
+        <h2>OUTR Grading System</h2>
+        <p>Grade points used for SGPA calculation.</p>
+      </div>
+    </div>
+    <div class="grade-grid">
+      <div><b>O</b><span>91–100</span><strong>10</strong></div>
+      <div><b>A</b><span>81–90</span><strong>9</strong></div>
+      <div><b>B</b><span>71–80</span><strong>8</strong></div>
+      <div><b>C</b><span>61–70</span><strong>7</strong></div>
+      <div><b>D</b><span>51–60</span><strong>6</strong></div>
+      <div><b>P</b><span>35–50</span><strong>5</strong></div>
+      <div><b>F</b><span>&lt;35</span><strong>2</strong></div>
+      <div><b>M</b><span>Malpractice</span><strong>—</strong></div>
+      <div><b>S</b><span>Absent</span><strong>—</strong></div>
+      <div><b>T</b><span>Attendance shortage</span><strong>—</strong></div>
+    </div>
+  </section>
+
+  <footer>OUTR CGPA Calculator • Free student tool</footer>
 </main>
 
-<footer>OUTR CGPA Calculator • Free student tool</footer>
 <script src="script.js"></script>
 </body>
 </html>
