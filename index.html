@@ -1,70 +1,121 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width,initial-scale=1">
-<meta name="theme-color" content="#a943c7">
-<title>OUTR CGPA Calculator</title>
-<link rel="stylesheet" href="style.css">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#b52fc2">
+  <title>OUTR CGPA Calculator</title>
+  <link rel="stylesheet" href="style.css">
 </head>
 <body>
-<div class="background-glow glow1"></div><div class="background-glow glow2"></div>
-<main class="container">
-<header class="hero">
-<div class="outr-logo"><span>OUTR</span></div>
-<h1>OUTR CGPA Calculator</h1>
-<p>Odisha University of Technology and Research</p>
-</header>
+  <main class="app">
+    <header class="hero">
+      <div class="logo" aria-label="OUTR logo">
+        <div class="logo-ring"><span>OUTR</span></div>
+      </div>
+      <h1>OUTR CGPA Calculator</h1>
+      <p>SGPA &amp; CGPA Calculator</p>
+    </header>
 
-<div class="switcher">
-<button class="switch active" data-show="sgpaPanel">SGPA Calculator</button>
-<button class="switch" data-show="cgpaPanel">CGPA Calculator</button>
-</div>
+    <nav class="tabs" aria-label="Calculator type">
+      <button class="tab active" data-tab="sgpa">SGPA</button>
+      <button class="tab" data-tab="cgpa">CGPA</button>
+    </nav>
 
-<section id="sgpaPanel" class="card">
-<div class="card-title"><div><h2>SGPA Calculator</h2><p>Enter subject, credit and grade.</p></div><span id="subjectCount" class="badge">0</span></div>
-<div class="table-head"><span>Subject</span><span>Credit</span><span>Grade</span><span></span></div>
-<div id="subjects"></div>
-<button id="addSubject" class="secondary">＋ Add Subject</button>
-<div class="credit-note">SGPA = Σ (Credit × Grade Point) ÷ Σ Credits</div>
-<button id="calcSgpa" class="primary">Calculate SGPA</button>
-<div id="sgpaResult" class="result"></div>
-</section>
+    <section id="sgpaPanel" class="panel">
+      <div class="panel-head">
+        <div>
+          <h2>Subjects</h2>
+          <p>Add your subjects, credits and grades.</p>
+        </div>
+        <span id="subjectCount" class="count">0</span>
+      </div>
 
-<section id="cgpaPanel" class="card hidden">
-<div class="card-title"><div><h2>CGPA Calculator</h2><p>Enter semester SGPA and total credits.</p></div><span id="semesterCount" class="badge">0</span></div>
-<div class="table-head semester-head"><span>Semester</span><span>SGPA</span><span>Credit</span><span></span></div>
-<div id="semesters"></div>
-<button id="addSemester" class="secondary">＋ Add Semester</button>
-<div class="credit-note">CGPA = Σ (SGPA × Semester Credits) ÷ Σ Credits</div>
-<button id="calcCgpa" class="primary">Calculate CGPA</button>
-<div id="cgpaResult" class="result"></div>
-</section>
+      <div class="subject-table-head">
+        <span>Subject</span><span>Credit</span><span>Grade</span><span></span>
+      </div>
+      <div id="subjects"></div>
 
-<section class="card grading">
-<div class="card-title"><div><h2>OUTR Grading System</h2><p>Grade points used in the calculator.</p></div></div>
-<div class="grades">
-<div><b>O</b><span>91–100</span><strong>10</strong></div><div><b>A</b><span>81–90</span><strong>9</strong></div>
-<div><b>B</b><span>71–80</span><strong>8</strong></div><div><b>C</b><span>61–70</span><strong>7</strong></div>
-<div><b>D</b><span>51–60</span><strong>6</strong></div><div><b>P</b><span>35–50</span><strong>5</strong></div>
-<div><b>F</b><span>&lt;35</span><strong>2</strong></div><div><b>M</b><span>Malpractice</span><strong>—</strong></div>
-<div><b>SA</b><span>Satisfactory</span><strong>0</strong></div><div><b>S</b><span>Absent</span><strong>—</strong></div>
-<div><b>T</b><span>Attendance Shortage</span><strong>—</strong></div>
-</div>
-</section>
+      <button id="addSubject" class="add-btn">＋ Add Subject</button>
 
-<section class="card about">
-<div class="about-label">About</div>
-<div class="designed">Designed &amp; Crafted by</div>
-<div class="creator-name">Ritesh Mallik</div>
-<div class="creator-course">Civil, OUTR</div>
-<div class="contact-row">
-<a class="contact" href="mailto:riteshmallik08@gmail.com">✉ Email</a>
-<a class="contact" href="https://github.com/ritesh-089" target="_blank" rel="noopener">◉ GitHub</a>
-</div>
-</section>
-<footer>OUTR CGPA Calculator • Free student tool</footer>
-</main>
-<script src="script.js"></script>
+      <div class="credit-note">
+        Credit options: <b>0, 1, 1.5, 2, 3, 4, 6</b> or choose <b>Custom</b>.
+      </div>
+
+      <div id="sgpaResult" class="result hidden"></div>
+
+      <button id="calcSGPA" class="primary-btn">Calculate SGPA</button>
+
+      <div class="signature">
+        <strong>Made by Ritesh Mallik</strong>
+        <span>Civil • OUTR</span>
+      </div>
+    </section>
+
+    <section id="cgpaPanel" class="panel hidden">
+      <div class="panel-head">
+        <div>
+          <h2>Semesters</h2>
+          <p>Enter semester SGPA and total credits.</p>
+        </div>
+        <span id="semesterCount" class="count">0</span>
+      </div>
+
+      <div class="semester-table-head">
+        <span>Semester</span><span>SGPA</span><span>Credit</span><span></span>
+      </div>
+      <div id="semesters"></div>
+
+      <button id="addSemester" class="add-btn">＋ Add Semester</button>
+
+      <div id="cgpaResult" class="result hidden"></div>
+
+      <button id="calcCGPA" class="primary-btn">Calculate CGPA</button>
+
+      <div class="signature">
+        <strong>Made by Ritesh Mallik</strong>
+        <span>Civil • OUTR</span>
+      </div>
+    </section>
+
+    <section class="panel grading">
+      <div class="panel-head">
+        <div>
+          <h2>OUTR Grading System</h2>
+          <p>Grade points used for SGPA calculation.</p>
+        </div>
+      </div>
+      <div class="grades">
+        <div class="grade"><b>O</b><small>91–100</small><strong>10</strong></div>
+        <div class="grade"><b>A</b><small>81–90</small><strong>9</strong></div>
+        <div class="grade"><b>B</b><small>71–80</small><strong>8</strong></div>
+        <div class="grade"><b>C</b><small>61–70</small><strong>7</strong></div>
+        <div class="grade"><b>D</b><small>51–60</small><strong>6</strong></div>
+        <div class="grade"><b>P</b><small>35–50</small><strong>5</strong></div>
+        <div class="grade"><b>F</b><small>&lt;35</small><strong>2</strong></div>
+        <div class="grade"><b>M</b><small>Malpractice</small><strong>—</strong></div>
+        <div class="grade"><b>S</b><small>Absent</small><strong>—</strong></div>
+        <div class="grade"><b>T</b><small>Attendance shortage</small><strong>—</strong></div>
+        <div class="grade"><b>SA</b><small>Satisfactory</small><strong>0</strong></div>
+      </div>
+      <p class="formula">SGPA = Σ (Credit × Grade Point) ÷ Σ Credits</p>
+    </section>
+
+    <section class="about">
+      <h2>About</h2>
+      <p>Designed &amp; crafted for OUTR students.</p>
+      <strong>Ritesh Mallik</strong>
+      <span>Civil • OUTR</span>
+      <div class="contact-row">
+        <a class="contact" href="mailto:YOUR_EMAIL_HERE" title="Email">✉</a>
+        <a class="contact" href="https://github.com/ritesh-089" target="_blank" rel="noopener" title="GitHub">◉</a>
+        <button class="contact" id="printBtn" title="Print result">🖨</button>
+      </div>
+      <button class="print-wide" id="printBtn2">🖨 Print Result</button>
+    </section>
+
+    <footer>OUTR CGPA Calculator • Free student tool</footer>
+  </main>
+  <script src="script.js"></script>
 </body>
 </html>
