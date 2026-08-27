@@ -27,9 +27,8 @@
     <div class="subject-head"><span>Subject</span><span>Credit</span><span>Grade</span><span></span></div>
     <div id="subjects"></div>
     <button id="addSubject" class="secondary full">＋ Add Subject</button>
-  
     <button id="calculateSGPA" class="primary full">Calculate SGPA</button>
-    <button onclick="window.print()">🖨️ Print Result</button>
+    <button id="printSGPA" class="secondary full print-btn" onclick="window.print()">🖨 Print Result</button>
     <div id="sgpaResult" class="result hidden"></div>
   </section>
 
@@ -42,7 +41,7 @@
     <div id="semesters"></div>
     <button id="addSemester" class="secondary full">＋ Add Semester</button>
     <button id="calculateCGPA" class="primary full">Calculate CGPA</button>
-    <button id="printResult" class="secondary full print-btn">🖨 Print Result</button>
+    <button id="printResult" class="secondary full print-btn" onclick="window.print()">🖨 Print Result</button>
     <div id="cgpaResult" class="result hidden"></div>
   </section>
 
@@ -67,7 +66,7 @@
 
   <section class="panel about">
     <h2>About</h2>
-    <p>Designed &amp; crafted by</p>
+    <p>Designed &amp; Crafted by</p>
     <h3>Ritesh Mallik</h3>
     <span>Civil • OUTR</span>
     <div class="contact">
